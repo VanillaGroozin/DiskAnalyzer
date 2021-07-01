@@ -1,0 +1,206 @@
+﻿<UserControl x:Class="DiskAnalyzer.FolderSpaceControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:DiskAnalyzer"
+            mc:Ignorable="d"
+            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+            TextElement.FontWeight="Regular"
+            TextElement.FontSize="13"
+            TextOptions.TextFormattingMode="Ideal"
+            TextOptions.TextRenderingMode="Auto"
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+            Background="{DynamicResource MaterialDesignPaper}"
+            FontFamily="{DynamicResource MaterialDesignFont}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <!--<Grid x:Name="MainGrid" Grid.Column="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="210" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <GridSplitter 
+            Grid.Column="2"
+            Grid.Row="2"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Stretch"
+            Background="Transparent" 
+            ShowsPreview="False"
+            Width="5"/>
+
+
+
+            <StackPanel Grid.Row="1" Grid.Column="2">
+                <TextBox x:Name="SearchTb"
+                 TextWrapping="Wrap"
+                 PreviewMouseDown="TextBox_MouseDown" VerticalAlignment="Top"
+                 Width="auto"/>
+                <ProgressBar 
+                Value="0" 
+                x:Name="SearchProgress" 
+                materialDesign:TransitionAssist.DisableTransitions="True" 
+                Height="Auto" Margin="0,0,10,0" />
+            </StackPanel>
+
+
+            <TreeView Grid.Column="1" Grid.Row="2"
+                  Margin="3"
+                  VirtualizingStackPanel.IsVirtualizing="False"
+                  x:Name="treeView1" 
+                  MouseDoubleClick="ListView_MouseDoubleClick" 
+                  MouseLeftButtonUp="ListView_MouseDoubleClick">
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=SubDirectories}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                    Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                    ToolTip="MaterialDesignFlatButton"
+                    Margin="10,2"
+                    Click="Button_Click_Back"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <materialDesign:PackIcon Kind="ArrowLeftThick" />
+                </Button>
+                <Button Grid.Column="1"
+                    Style="{StaticResource MaterialDesignToolForegroundButton}"
+                    Margin="10,2"
+                    Click="Button_Click_Forward"
+                    ToolTip="MaterialDesignFlatButton"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <materialDesign:PackIcon Kind="ArrowRightThick" />
+                </Button>
+            </Grid>
+
+
+
+
+            <DataGrid 
+            x:Name="gridView1"
+            ItemsSource="{Binding Directories, Mode=TwoWay}"
+            Grid.Column="2" Grid.Row="2"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"
+            CanUserAddRows="False"
+            IsReadOnly="True"
+            AutoGenerateColumns="False"
+            MouseDoubleClick="ListView_MouseDoubleClick"
+            HeadersVisibility="All" Margin="6,0,0,0">
+
+                <DataGrid.Columns>
+                    --><!--<DataGridTemplateColumn Header="Married">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button 
+                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                        Margin="10,2"
+                                        Click="Button_Click_Forward"
+                                        ToolTip="MaterialDesignFlatButton"
+                                        Visibility="{Binding Path=IfFile, Converter={StaticResource BoolToVisConverter}}" 
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                    <materialDesign:PackIcon Kind="ArrowRightThick"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>--><!--
+                    <DataGridTextColumn
+                        Header="IsFile"
+                        SortDirection="Ascending" 
+                        Binding="{Binding IsFile, UpdateSourceTrigger=PropertyChanged}"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn
+                    Header="Name"
+                    Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn
+                    Header="Size"
+                    Binding="{Binding Size, UpdateSourceTrigger=PropertyChanged}"
+                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}" SortMemberPath="fileLength"/>
+
+                    <DataGridTextColumn
+                    Header="Path"
+                    Binding="{Binding Path, UpdateSourceTrigger=PropertyChanged}"
+                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                    </DataGridTextColumn>
+
+                    <DataGridTemplateColumn
+                    Header="Percentage">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <ProgressBar IsIndeterminate="{Binding Path=IsLoading}"/>
+                                    --><!--<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" />--><!--
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+
+            --><!--<ListView x:Name="listView1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                  MouseDoubleClick="ListView_MouseDoubleClick" ItemsSource="{Binding Directories}" Margin="193,48,0,0" Height="AUTO" Width="85">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="Auto" DisplayMemberBinding="{Binding name}" />
+                    <GridViewColumn Header="Size" Width="Auto" DisplayMemberBinding="{Binding size}" />
+                    <GridViewColumn Header="Path" Width="Auto" DisplayMemberBinding="{Binding path}" />
+                </GridView>
+            </ListView.View>
+            -->
+            <!--<ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>-->
+            <!--
+        </ListView>--><!--
+
+        </Grid>-->
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Mode="PrimaryMid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                  VerticalContentAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}" Margin="15" 
+                           VerticalAlignment="Bottom" FontSize="30">New Alarm</TextBlock>
+            </Grid>
+        </materialDesign:ColorZone>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" Margin="20">
+            <Button Style="{DynamicResource MaterialDesignFlatButton}" Margin="5"
+                    Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom">Cancel</Button>
+            <Button Margin="5"
+                    Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom">Save</Button>
+        </StackPanel>-->
+    </Grid>
+</UserControl>

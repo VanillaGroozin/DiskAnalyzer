@@ -1,0 +1,355 @@
+﻿<UserControl x:Class="DiskAnalyzer.Views.DiscView"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:DiskAnalyzer.Views"
+	xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="71"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+
+        <materialDesign:Snackbar Grid.Column="0" Grid.Row="4"  Grid.ColumnSpan="5"
+            x:Name="SnackbarOne"
+            MessageQueue="{materialDesign:MessageQueue}" 
+            IsActive="False" />
+        <materialDesign:Card
+            x:Name="AnalyzeDiskTopPanel"
+            Grid.Row="0" Grid.Column="1" Grid.RowSpan="5" Grid.ColumnSpan="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="71"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:Card Visibility="Hidden"
+                    x:Name="LoadingBar"
+                    Padding="10" Margin="0,5" Grid.Row="0" Grid.Column="0"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                    materialDesign:ShadowAssist.ShadowEdges="Bottom,Left,Right">
+                    <DockPanel>
+                        <materialDesign:PackIcon
+                            Kind="Disc"
+                            Height="32"
+                            Width="32"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            x:Name="loadingFilesLbl"
+                            Margin="0,0,20,0"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+
+                        <ProgressBar x:Name="loadingFilesPB" Margin="20 5 20 5"/>
+                    </DockPanel>
+                </materialDesign:Card>
+
+                <materialDesign:Card Grid.Row="1" Grid.Column="0"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                    materialDesign:ShadowAssist.ShadowEdges="Bottom,Left,Right">
+                    <DockPanel x:Name="FilesSubPanel"  IsEnabled="False">
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignTabRadioButton}"
+                            IsChecked="False"                          
+                            Click="BiggestFilesSubPanelSelect"
+                            Content="Biggest files" />
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignTabRadioButton}"
+                            IsChecked="False"
+                            Click="CleanFilesSubPanelSelect"
+                            Content="Clean"
+                            Margin="0,0,10,0"/>
+                        <Grid>
+                            <Grid x:Name="BiggestFilesSubPanel" Grid.Row="0" Grid.Column="0" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock x:Name="FilesCountTb"
+                                    VerticalAlignment="Center"
+                                    Text="Files"
+                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"/>
+                                    <Slider x:Name="FilesCountSlider"
+                                    ValueChanged="FilesCountSlider_ValueChanged"
+                                    TickFrequency="5"
+                                    Orientation="Horizontal"
+                                    TickPlacement="BottomRight"
+                                    Minimum="1"
+                                    Maximum="50"
+                                    IsSelectionRangeEnabled="True" />
+                                </StackPanel>
+                                <Button Margin="10, 0" Grid.Column="1" Click="BiggestFilesSubPanelShow">Show</Button>
+                            </Grid>
+
+                            <Grid x:Name="CleanFilesSubPanel" Grid.Row="0" Grid.Column="0" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Margin="5" Grid.Row="0" Orientation="Horizontal">
+                                    <ToggleButton
+                                        x:Name="TempToggleBtn"
+                                        Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                        ToolTip="Default ToggleButton Style" />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Text="Temp files"
+                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"/>
+                                </StackPanel>
+                                <StackPanel Margin="5" Grid.Row="1" Orientation="Horizontal">
+                                    <ToggleButton
+                                        x:Name="RecBinToggleBtn"
+                                        Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                        ToolTip="Default ToggleButton Style" />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Text="Recycle bin"
+                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"/>
+                                </StackPanel>
+                                <Button Margin="10, 0" Grid.Column="1" Grid.RowSpan="2"
+                                        Click="CleanDiscClick" Content="Clean"></Button>
+                            </Grid>
+                        </Grid>
+                    </DockPanel>
+                </materialDesign:Card>
+
+
+                <StackPanel x:Name="StartInfo" 
+                            Grid.Column="1" Grid.Row="3" 
+                            Grid.RowSpan="3" Grid.ColumnSpan="4"
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="ArrowLeftBoldHexagonOutline"
+                                             Width="150" Height="150"
+                                             HorizontalAlignment="Center"/>
+                    <TextBlock 
+                        Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                        Text=" Choose disk to analyze" />
+                </StackPanel>
+                
+                
+                
+                
+                <lvc:PieChart IsEnabled="False" x:Name="diskPieChart" Grid.Column="1" Grid.Row="3" 
+                      Grid.RowSpan="3" Grid.ColumnSpan="4"
+                      LegendLocation="Right" InnerRadius="50"                   
+                      DataClick="Chart_OnDataClick" Margin="0 15">
+                    <lvc:PieChart.ChartLegend>
+                        <lvc:DefaultLegend BulletSize="20"></lvc:DefaultLegend>
+                    </lvc:PieChart.ChartLegend>
+                    <lvc:PieChart.DataTooltip>
+                        <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"/>
+                    </lvc:PieChart.DataTooltip>
+                </lvc:PieChart>
+            </Grid>
+        </materialDesign:Card>
+        
+        <ScrollViewer x:Name="MyScrollViewer" 
+                      Margin="15"
+                      HorizontalScrollBarVisibility="Auto" 
+                      Grid.Column="0" Grid.Row="0"
+                      Grid.RowSpan="5">
+            <WrapPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="3"
+                     MinWidth="200" Width="{Binding ElementName=MyScrollViewer, Path=ViewportWidth}">
+                <ItemsControl x:Name="Drivers" ItemsSource="{Binding Drives}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:Flipper>
+                                <materialDesign:Flipper.FrontContent>
+                                    <materialDesign:Card Height="256" Width="200">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="160" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <materialDesign:ColorZone Mode="Dark"
+                                                          VerticalAlignment="Stretch">
+                                                <materialDesign:PackIcon
+                                                    Kind="Disc"
+                                                    Height="128"
+                                                    Width="128"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center" />
+                                            </materialDesign:ColorZone>
+                                            <StackPanel Grid.Row="1"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Name}" />
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                            Content="Details" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </materialDesign:Card>
+                                </materialDesign:Flipper.FrontContent>
+                                <materialDesign:Flipper.BackContent>
+                                    <materialDesign:Card Height="256" Width="200">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <materialDesign:ColorZone Mode="Inverted" Padding="6">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button
+                                                         Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                         Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                                         HorizontalAlignment="Left">
+                                                        <materialDesign:PackIcon
+                                                            Kind="ArrowLeft"
+                                                            HorizontalAlignment="Right" />
+                                                    </Button>
+                                                    <TextBlock
+                                                        Margin="8 0 0 0"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding NameForCard}" />
+                                                </StackPanel>
+                                            </materialDesign:ColorZone>
+                                            <Grid
+                                                x:Name="BackCardGrid"
+                                                Grid.Row="1"
+                                                Margin="0 6 0 0"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Top"
+                                                Width="172">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="40"/>
+                                                    <RowDefinition Height="40" />
+                                                    <RowDefinition Height="40" />
+                                                    <RowDefinition Height="40" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Row="0" Grid.Column="0"
+                                                           Content="TYPE: " />
+                                                <Label Grid.Row="0" Grid.Column="1"
+                                                           Content="{Binding Type}" />
+                                                <Label Grid.Row="1" Grid.Column="0"
+                                                    Content="FORMAT:" />
+                                                <Label Grid.Row="1" Grid.Column="1"
+                                                         Content="{Binding Format}" />
+                                                <Label Grid.Row="2" Grid.ColumnSpan="2"
+                                                         Content="{Binding SizeComparison}"/>
+                                                <ProgressBar Grid.Row="3" Grid.ColumnSpan="2"
+                                                             Value="{Binding Percentage}"/>
+                                                <materialDesign:Badged Grid.Row="4"
+                                                                       Grid.ColumnSpan="2"
+                                                                       HorizontalAlignment="Center"
+                                                                       Badge="{materialDesign:PackIcon Kind=ProgressCheck}"
+                                                                       BadgeColorZoneMode="PrimaryLight">
+                                                <Button x:Name="AnalyzeBtn" Content="ANALYZE" Click="Button_Click"/>
+                                                </materialDesign:Badged>
+                                            </Grid>
+                                        </Grid>
+                                    </materialDesign:Card>
+                                </materialDesign:Flipper.BackContent>
+                            </materialDesign:Flipper>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </WrapPanel>
+        </ScrollViewer>
+
+        
+        
+        
+
+        <materialDesign:Card 
+            Padding="10" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5"
+            materialDesign:ShadowAssist.ShadowDepth="Depth3"
+            materialDesign:ShadowAssist.ShadowEdges="Bottom,Right"
+            x:Name="CategoryFilesListTopPanel"
+            Visibility="Hidden">
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource MaterialDesignIconButton}"
+                        ToolTip="MaterialDesignIconButton"
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                        Click="BackToDiskClick">
+                    <materialDesign:PackIcon Kind="ArrowBack" />
+                </Button>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <ListView x:Name="FilesList" ItemsSource="{Binding File}" 
+                  Grid.Column="0" Grid.Row="1"
+                  Grid.RowSpan="4" Grid.ColumnSpan="5"
+                  Visibility="Hidden">
+            <!--<ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="PreviewMouseRightButtonDown"
+                         Handler="FilesList_MouseRightClick" />
+                </Style>
+            </ListView.ItemContainerStyle>-->
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Options">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <materialDesign:PopupBox
+                                        HorizontalAlignment="Right"
+                                        Padding="2 0 2 0">
+                                        <StackPanel>
+                                            <Button Content="Open" Click="OpenFileClick" />
+                                            <Button Content="Delete" Click="DeleteFileClick"/>
+                                        </StackPanel>
+                                    </materialDesign:PopupBox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn
+                                DisplayMemberBinding="{Binding Name}"
+                                Header="Name" />
+                    <GridViewColumn
+                                DisplayMemberBinding="{Binding Extension}"
+                                Header="Extension" />
+                    <GridViewColumn
+                                DisplayMemberBinding="{Binding ExtensionDescription}"
+                                Header="ExtensionDescription" />
+                    <GridViewColumn
+                                DisplayMemberBinding="{Binding SizeToString}"
+                                Header="Size" />
+                    <GridViewColumn
+                                DisplayMemberBinding="{Binding Path}"
+                                Header="Path" />
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+
+    </Grid>
+</UserControl>
